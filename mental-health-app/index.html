@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindWell - Mental Health Companion</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <h1>MindWell</h1>
+            </div>
+            <p class="tagline">Your Mental Health Companion</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="dashboard">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </button>
+            <button class="tab-btn" data-tab="quotes">
+                <i class="fas fa-quote-left"></i>
+                Inspiration
+            </button>
+            <button class="tab-btn" data-tab="mood">
+                <i class="fas fa-smile"></i>
+                Mood Tracker
+            </button>
+            <button class="tab-btn" data-tab="resources">
+                <i class="fas fa-book"></i>
+                Resources
+            </button>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="welcome-section">
+                <h2>Welcome back!</h2>
+                <p>How are you feeling today?</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Daily Tip</h3>
+                    </div>
+                    <div class="card-content">
+                        <p id="daily-tip">Loading your daily mental health tip...</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Mood Overview</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="mood-summary">
+                            <div class="mood-item">
+                                <span class="mood-emoji">😊</span>
+                                <span>This Week: <strong id="week-mood">Good</strong></span>
+                            </div>
+                            <div class="mood-item">
+                                <span class="mood-emoji">📈</span>
+                                <span>Streak: <strong id="mood-streak">3 days</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-star"></i>
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="showBreathingExercise()">
+                                <i class="fas fa-wind"></i>
+                                Breathing Exercise
+                            </button>
+                            <button class="action-btn" onclick="logMood()">
+                                <i class="fas fa-plus"></i>
+                                Log Mood
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quotes Tab -->
+        <div id="quotes" class="tab-content">
+            <div class="section-header">
+                <h2>Daily Inspiration</h2>
+                <button class="refresh-btn" onclick="fetchNewQuote()">
+                    <i class="fas fa-sync-alt"></i>
+                    New Quote
+                </button>
+            </div>
+
+            <div class="quote-container">
+                <div class="quote-card">
+                    <div class="quote-content">
+                        <i class="fas fa-quote-left quote-icon"></i>
+                        <p id="quote-text">Loading inspirational quote...</p>
+                        <p class="quote-author">- <span id="quote-author">Author</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote-categories">
+                <h3>Browse by Category</h3>
+                <div class="category-buttons">
+                    <button class="category-btn" onclick="fetchQuoteByTag('motivational')">Motivational</button>
+                    <button class="category-btn" onclick="fetchQuoteByTag('wisdom')">Wisdom</button>
+                    <button class="category-btn" onclick="fetchQuoteByTag('happiness')">Happiness</button>
+                    <button class="category-btn" onclick="fetchQuoteByTag('success')">Success</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood Tracker Tab -->
+        <div id="mood" class="tab-content">
+            <div class="section-header">
+                <h2>Mood Tracker</h2>
+                <p>Track your daily emotions and see patterns over time</p>
+            </div>
+
+            <div class="mood-selector">
+                <h3>How are you feeling right now?</h3>
+                <div class="mood-options">
+                    <button class="mood-btn" data-mood="excellent" onclick="selectMood('excellent', '😄')">
+                        <span class="mood-emoji">😄</span>
+                        <span>Excellent</span>
+                    </button>
+                    <button class="mood-btn" data-mood="good" onclick="selectMood('good', '😊')">
+                        <span class="mood-emoji">😊</span>
+                        <span>Good</span>
+                    </button>
+                    <button class="mood-btn" data-mood="okay" onclick="selectMood('okay', '😐')">
+                        <span class="mood-emoji">😐</span>
+                        <span>Okay</span>
+                    </button>
+                    <button class="mood-btn" data-mood="low" onclick="selectMood('low', '😔')">
+                        <span class="mood-emoji">😔</span>
+                        <span>Low</span>
+                    </button>
+                    <button class="mood-btn" data-mood="struggling" onclick="selectMood('struggling', '😢')">
+                        <span class="mood-emoji">😢</span>
+                        <span>Struggling</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mood-notes">
+                <h3>Add a note (optional)</h3>
+                <textarea id="mood-note" placeholder="What's on your mind today?"></textarea>
+                <button class="save-mood-btn" onclick="saveMood()">
+                    <i class="fas fa-save"></i>
+                    Save Mood Entry
+                </button>
+            </div>
+
+            <div class="mood-history">
+                <h3>Recent Entries</h3>
+                <div id="mood-entries">
+                    <!-- Mood entries will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Tab -->
+        <div id="resources" class="tab-content">
+            <div class="section-header">
+                <h2>Mental Health Resources</h2>
+                <p>Professional help and support when you need it</p>
+            </div>
+
+            <div class="resources-grid">
+                <div class="resource-card emergency">
+                    <div class="resource-header">
+                        <i class="fas fa-phone"></i>
+                        <h3>Crisis Support</h3>
+                    </div>
+                    <div class="resource-content">
+                        <p><strong>National Suicide Prevention Lifeline</strong></p>
+                        <p class="phone-number">988</p>
+                        <p>24/7 free and confidential support</p>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <i class="fas fa-comments"></i>
+                        <h3>Online Therapy</h3>
+                    </div>
+                    <div class="resource-content">
+                        <ul>
+                            <li><a href="https://www.betterhelp.com" target="_blank">BetterHelp</a></li>
+                            <li><a href="https://www.talkspace.com" target="_blank">Talkspace</a></li>
+                            <li><a href="https://www.cerebral.com" target="_blank">Cerebral</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <i class="fas fa-book-open"></i>
+                        <h3>Self-Help Resources</h3>
+                    </div>
+                    <div class="resource-content">
+                        <ul>
+                            <li><a href="https://www.nami.org" target="_blank">NAMI</a></li>
+                            <li><a href="https://www.mentalhealth.gov" target="_blank">MentalHealth.gov</a></li>
+                            <li><a href="https://www.samhsa.gov" target="_blank">SAMHSA</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <i class="fas fa-users"></i>
+                        <h3>Support Groups</h3>
+                    </div>
+                    <div class="resource-content">
+                        <ul>
+                            <li><a href="https://www.supportgroups.com" target="_blank">Support Groups</a></li>
+                            <li><a href="https://www.7cups.com" target="_blank">7 Cups</a></li>
+                            <li><a href="https://www.reddit.com/r/mentalhealth" target="_blank">Reddit Mental Health</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Breathing Exercise Modal -->
+        <div id="breathing-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeBreathingExercise()">&times;</span>
+                <h2>Breathing Exercise</h2>
+                <div class="breathing-circle">
+                    <div class="circle" id="breathing-circle"></div>
+                    <p id="breathing-instruction">Click Start to begin</p>
+                </div>
+                <button id="breathing-btn" onclick="startBreathingExercise()">Start</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 MindWell. Supporting your mental health journey.</p>
+            <p class="disclaimer">This app is not a substitute for professional medical advice.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
